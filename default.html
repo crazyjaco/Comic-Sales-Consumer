@@ -1,0 +1,72 @@
+<html>
+<head>
+	<title>Comic Sales Data Consumer</title>
+	<script src="http://www.google.com/jsapi"></script>
+	<script>
+		google.load('jquery','1.7.1');
+	</script>
+	<link rel="stylesheet" type="text/css" href="lib/jquery.tidy.table.css">
+	<script src="lib/jquery.tidy.table.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery.ajax({
+				dataType: "json",
+				url: 'getDataJSON.php',
+//				data: data,
+				success: function(data) {
+					jQuery('#container')
+						.TidyTable({
+							enableCheckBox: false,
+							enableMenu: false
+						},
+						{
+							columnTitles: data.headings,
+							columnValues: data.values
+						},
+						function () {
+							jQuery('td').on('click', function(event) {
+								//console.dir(this);
+								jQuery(this).empty();
+								jQuery(this).append('<input type="text" value="' + $(this).val() + '" />' );
+								jQuery(this).find('input').focus();
+								//$(this).attr('title');
+							});
+
+							jQuery('td').on('keypress', function(event) {
+								if (13 == event.keyCode) {
+									var newVal;
+									newVal = jQuery(this).find('input').val();
+									console.log(newVal);
+									jQuery(this).empty();
+									jQuery(this).append(newVal);
+								}
+							});
+						}						
+						);
+				}
+			});
+
+			jQuery('button#save').on('click', function (e) {
+
+
+			});
+
+
+		} );
+
+	</script>
+</head>
+<body>
+	<header>
+		<h1>Comic Sales Data Consumer</h1>
+	</header>
+
+		<h2>Url of Sales Data table (ICv2)</h2>
+		<input type="text" /> <button>Submit</button>
+		<button id="save">Next</button>
+	<div id="container">
+
+	</div>
+
+</body>
+</html>
